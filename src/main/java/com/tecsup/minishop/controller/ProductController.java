@@ -5,6 +5,7 @@ import com.tecsup.minishop.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.tecsup.minishop.dto.ProductRequest;
 
 import java.util.List;
 
@@ -19,10 +20,15 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(productService.save(product));
-    }
+public ResponseEntity<Product> create(@RequestBody ProductRequest request) {
+    Product product = Product.builder()
+            .name(request.name())
+            .price(request.price())
+            .stock(request.stock())
+            .build();
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body(productService.save(product));
+}
 
     @GetMapping
     public ResponseEntity<List<Product>> findAll() {
